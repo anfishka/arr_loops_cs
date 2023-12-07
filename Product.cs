@@ -43,27 +43,59 @@ while (!validInputSize)
 
         ConsoleColor defaultColor = Console.BackgroundColor;
 
+        int xPos = 0;
+        int yPos = 0;
 
-        for (int i = 0; i < parsedSize; i++)
+        ConsoleKeyInfo keyInfo;
+
+        do
         {
-            for (int j = 0; j < parsedSize; j++)
+            Console.Clear();
+            for (int i = 0; i < parsedSize; i++)
             {
-                if (i == 0 || i == parsedSize - 1 || j == 0 || j == parsedSize - 1)
+                for (int j = 0; j < parsedSize; j++)
                 {
-                    Console.BackgroundColor = ConsoleColor.Green;
-                    Console.Write(" * ");
+                    if (i == 0 || i == parsedSize - 1 || j == 0 || j == parsedSize - 1)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Green;
+                        Console.SetCursorPosition(xPos + j * 3, yPos + i);
+                        Console.Write(" * ");
+                    }
+                    else
+                    {
+                        Console.BackgroundColor = defaultColor;
+                        Console.SetCursorPosition(xPos + j * 3, yPos + i);
+                        Console.Write("   ");
+                    }
+
                 }
-                else
-                {
-                    Console.BackgroundColor = defaultColor;
-                    Console.Write("   ");
-                }
+                Console.WriteLine();
 
             }
-            Console.WriteLine();
 
-        }
+            Console.BackgroundColor = ConsoleColor.Black;
+            keyInfo = Console.ReadKey();
 
+            switch (keyInfo.Key)
+            {
+                case ConsoleKey.W:
+                    if (yPos > 0)
+                        yPos--;
+                    break;
+                case ConsoleKey.S:
+                    if (yPos < Console.WindowWidth - parsedSize)
+                        yPos++;
+                    break;
+                case ConsoleKey.A:
+                    if (xPos > 0)
+                        xPos -= 3;
+                    break;
+                case ConsoleKey.D:
+                    if (xPos < Console.WindowWidth - parsedSize * 3)
+                        xPos += 3;
+                    break;
+            }
+        } while (keyInfo.Key != ConsoleKey.Escape);
         Console.BackgroundColor = ConsoleColor.Black;
         return;
     }
@@ -74,4 +106,3 @@ while (!validInputSize)
     }
 
 }
-
